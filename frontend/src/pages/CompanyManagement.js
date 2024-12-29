@@ -54,7 +54,7 @@ const CompanyManagement = () => {
         comments: '',
         periodicity: ''
       });
-      setIsFormVisible(false); // Hide the form after adding
+      setIsFormVisible(false);
     } catch (error) {
       console.error('Error adding company:', error.response ? error.response.data : error.message);
     }
@@ -64,7 +64,7 @@ const CompanyManagement = () => {
   const editCompany = (index) => {
     setEditingIndex(index);
     setEditingCompany(companies[index]);
-    setIsFormVisible(true); // Show the form when editing
+    setIsFormVisible(true);
   };
 
   // Update a company
@@ -81,7 +81,7 @@ const CompanyManagement = () => {
       setCompanies(updatedCompanies);
       setEditingIndex(null);
       setEditingCompany({});
-      setIsFormVisible(false); // Hide the form after updating
+      setIsFormVisible(false);
     } catch (error) {
       console.error('Error updating company:', error.response ? error.response.data : error.message);
     }
@@ -99,7 +99,7 @@ const CompanyManagement = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      <div className="max-w-8xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-gray-800 mb-6">Company Management</h2>
 
         {/* Toggle Button */}
@@ -132,13 +132,12 @@ const CompanyManagement = () => {
               placeholder="Location"
               value={editingIndex !== null ? editingCompany.location : newCompany.location}
               onChange={handleInputChange}
-              required
             />
             <input
               className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              type="text"
+              type="url"
               name="linkedin"
-              placeholder="LinkedIn Profile"
+              placeholder="LinkedIn URL"
               value={editingIndex !== null ? editingCompany.linkedin : newCompany.linkedin}
               onChange={handleInputChange}
             />
@@ -146,7 +145,7 @@ const CompanyManagement = () => {
               className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               type="text"
               name="emails"
-              placeholder="Emails"
+              placeholder="Emails (comma-separated)"
               value={editingIndex !== null ? editingCompany.emails : newCompany.emails}
               onChange={handleInputChange}
             />
@@ -154,13 +153,12 @@ const CompanyManagement = () => {
               className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               type="text"
               name="phoneNumbers"
-              placeholder="Phone Numbers"
+              placeholder="Phone Numbers (comma-separated)"
               value={editingIndex !== null ? editingCompany.phoneNumbers : newCompany.phoneNumbers}
               onChange={handleInputChange}
             />
-            <input
+            <textarea
               className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-              type="text"
               name="comments"
               placeholder="Comments"
               value={editingIndex !== null ? editingCompany.comments : newCompany.comments}
@@ -170,7 +168,7 @@ const CompanyManagement = () => {
               className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               type="text"
               name="periodicity"
-              placeholder="Communication Periodicity"
+              placeholder="Periodicity"
               value={editingIndex !== null ? editingCompany.periodicity : newCompany.periodicity}
               onChange={handleInputChange}
             />
@@ -191,6 +189,10 @@ const CompanyManagement = () => {
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Location</th>
                 <th className="px-4 py-2">LinkedIn</th>
+                <th className="px-4 py-2">Emails</th>
+                <th className="px-4 py-2">Phone Numbers</th>
+                <th className="px-4 py-2">Comments</th>
+                <th className="px-4 py-2">Periodicity</th>
                 <th className="px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -209,6 +211,10 @@ const CompanyManagement = () => {
                       LinkedIn
                     </a>
                   </td>
+                  <td className="px-4 py-2">{company.emails}</td>
+                  <td className="px-4 py-2">{company.phoneNumbers}</td>
+                  <td className="px-4 py-2">{company.comments}</td>
+                  <td className="px-4 py-2">{company.periodicity}</td>
                   <td className="px-4 py-2">
                     <button
                       onClick={() => editCompany(index)}

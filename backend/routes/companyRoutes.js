@@ -3,8 +3,10 @@ const {
   addCompany, 
   getCompanies, 
   updateCompany, 
+  updateCommunicationMethods, // Import the new method
   deleteCompany 
 } = require('../controllers/companyController.js');
+
 
 const router = express.Router();
 

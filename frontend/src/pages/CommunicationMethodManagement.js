@@ -1,14 +1,24 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+
+const predefinedMethods = [
+    "LinkedIn Post",
+    "LinkedIn Message",
+    "Email",
+    "Phone Call",
+    "Other",
+];
 
 const CommunicationMethodManagement = () => {
-    const [companies, setCompanies] = useState([]); // State for companies
+    const [companies, setCompanies] = useState([]);
+    const [selectedCompany, setSelectedCompany] = useState('');
     const [methods, setMethods] = useState([]);
     const [newMethod, setNewMethod] = useState({
         name: '',
         description: '',
         sequence: '',
         mandatory: false,
+        companyId: '',
     });
     const [showForm, setShowForm] = useState(false);
 
@@ -24,6 +34,18 @@ const CommunicationMethodManagement = () => {
         fetchMethods();
     }, []);
 
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/companies');
+                setCompanies(response.data);
+            } catch (error) {
+                console.error('Error fetching companies:', error);
+            }
+        };
+        fetchCompanies();
+    }, []);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewMethod({ ...newMethod, [name]: value });
@@ -33,15 +55,23 @@ const CommunicationMethodManagement = () => {
         setNewMethod({ ...newMethod, mandatory: e.target.checked });
     };
 
-    const addMethod = async (e) => {
+    const addOrUpdateMethod = async (e) => {
+        console.log('New Method Data:', newMethod); // Log the new method data
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/communication-methods', newMethod);
-            setMethods([...methods, response.data]);
-            setNewMethod({ name: '', description: '', sequence: '', mandatory: false });
-            setShowForm(false); // Close the form after adding the method
+            if (newMethod._id) {
+                const response = await axios.put(`http://localhost:5000/api/communication-methods/${newMethod._id}`, newMethod);
+                console.log('Update Response:', response.data); // Log the response data
+                setMethods(methods.map(method => (method._id === response.data._id ? response.data : method)));
+            } else {
+                const response = await axios.post('http://localhost:5000/api/communication-methods', newMethod);
+                setMethods([...methods, response.data]);
+            }
+            setNewMethod({ name: '', description: '', sequence: '', mandatory: false, companyId: '' });
+            setSelectedCompany('');
+            setShowForm(false);
         } catch (error) {
-            console.error('Error adding communication method:', error);
+            console.error('Error adding/updating communication method:', error);
         }
     };
 
@@ -56,11 +86,11 @@ const CommunicationMethodManagement = () => {
 
     const editMethod = (method) => {
         setNewMethod(method);
-        setShowForm(true); // Show the form for editing
+        setShowForm(true);
     };
 
     return (
-        <div className="p-6 max-w-4xl mx-auto">
+        <div className="p-6 max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold mb-6">Communication Method Management</h2>
             <button
                 onClick={() => setShowForm(!showForm)}
@@ -69,16 +99,19 @@ const CommunicationMethodManagement = () => {
                 {showForm ? 'Close Form' : 'Add New Method'}
             </button>
             {showForm && (
-                <form onSubmit={addMethod} className="grid grid-cols-1 gap-4 mb-6 bg-white p-6 rounded shadow">
-                    <input
-                        type="text"
+                <form onSubmit={addOrUpdateMethod} className="grid grid-cols-1 gap-4 mb-6 bg-white p-6 rounded shadow">
+                    <select
                         name="name"
-                        placeholder="Method Name"
                         value={newMethod.name}
                         onChange={handleInputChange}
                         required
                         className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
+                    >
+                        <option value="">Select Communication Method</option>
+                        {predefinedMethods.map((method, index) => (
+                            <option key={index} value={method}>{method}</option>
+                        ))}
+                    </select>
                     <input
                         type="text"
                         name="description"
@@ -107,6 +140,20 @@ const CommunicationMethodManagement = () => {
                         />
                         Mandatory
                     </label>
+                    <select
+                        name="companyId"
+                        value={selectedCompany}
+                        onChange={(e) => {
+                            setSelectedCompany(e.target.value);
+                            setNewMethod({ ...newMethod, companyId: e.target.value });
+                        }}
+                        className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        <option value="">Select Company</option>
+                        {companies.map(company => (
+                            <option key={company._id} value={company._id}>{company.name}</option>
+                        ))}
+                    </select>
                     <button
                         type="submit"
                         className="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -120,10 +167,11 @@ const CommunicationMethodManagement = () => {
                 <table className="min-w-full bg-white border border-gray-200 rounded shadow">
                     <thead className="bg-gray-100">
                         <tr>
-                            <th className="px-6 py-2 text-left text-sm font-medium text-gray-600">Name</th>
+                            <th className="px-6 py-2 text-left text-sm font-medium text-gray-600">Communication Method</th>
                             <th className="px-6 py-2 text-left text-sm font-medium text-gray-600">Description</th>
                             <th className="px-6 py-2 text-left text-sm font-medium text-gray-600">Sequence</th>
                             <th className="px-6 py-2 text-left text-sm font-medium text-gray-600">Mandatory</th>
+                            <th className="px-6 py-2 text-left text-sm font-medium text-gray-600">Company</th>
                             <th className="px-6 py-2 text-center text-sm font-medium text-gray-600">Actions</th>
                         </tr>
                     </thead>
@@ -134,6 +182,9 @@ const CommunicationMethodManagement = () => {
                                 <td className="px-6 py-2 text-sm text-gray-800">{method.description}</td>
                                 <td className="px-6 py-2 text-sm text-gray-800">{method.sequence}</td>
                                 <td className="px-6 py-2 text-sm text-gray-800">{method.mandatory ? 'Yes' : 'No'}</td>
+                                <td className="px-6 py-2 text-sm text-gray-800">
+                                    {companies.find(company => company._id === method.companyId)?.name || 'N/A'}
+                                </td>
                                 <td className="px-6 py-2 text-sm text-center">
                                     <button
                                         onClick={() => editMethod(method)}

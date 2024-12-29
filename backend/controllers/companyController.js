@@ -1,4 +1,5 @@
 const Company = require('../models/Company');
+const CommunicationMethod = require('../models/CommunicationMethod'); // Import CommunicationMethod model
 
 // Add a new company
 const addCompany = async (req, res) => {
@@ -14,7 +15,7 @@ const addCompany = async (req, res) => {
 // Get all companies
 const getCompanies = async (req, res) => {
     try {
-        const companies = await Company.find();
+        const companies = await Company.find().populate('communicationMethods'); // Populate communication methods
         res.status(200).json(companies);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching companies', error });
@@ -28,6 +29,17 @@ const updateCompany = async (req, res) => {
         res.status(200).json({ company: updatedCompany });
     } catch (error) {
         res.status(500).json({ message: 'Error updating company', error });
+    }
+};
+
+// Update communication methods for a company
+const updateCommunicationMethods = async (req, res) => {
+    try {
+        const { communicationMethods } = req.body; // Expecting an array of communication method IDs
+        const updatedCompany = await Company.findByIdAndUpdate(req.params.id, { communicationMethods }, { new: true });
+        res.status(200).json({ company: updatedCompany });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating communication methods', error });
     }
 };
 
@@ -45,5 +57,6 @@ module.exports = {
     addCompany,
     getCompanies,
     updateCompany,
+    updateCommunicationMethods, // Export the new method
     deleteCompany
 };

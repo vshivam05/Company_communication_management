@@ -1,5 +1,6 @@
 const CommunicationMethod = require('../models/CommunicationMethod');
 
+
 const getCommunicationMethods = async (req, res) => {
     try {
         const methods = await CommunicationMethod.find();
@@ -10,7 +11,10 @@ const getCommunicationMethods = async (req, res) => {
 };
 
 const createCommunicationMethod = async (req, res) => {
-    const method = new CommunicationMethod(req.body);
+    const method = new CommunicationMethod({
+        ...req.body,
+        companyId: req.body.companyId, // Include companyId from request body
+    });
     try {
         const savedMethod = await method.save();
         res.status(201).json(savedMethod);

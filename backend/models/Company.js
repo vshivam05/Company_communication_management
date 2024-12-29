@@ -7,7 +7,10 @@ const companySchema = new mongoose.Schema({
     emails: { type: String },
     phoneNumbers: { type: String },
     comments: { type: String },
-    periodicity: { type: String }
+    periodicity: { type: String,
+        default:'2 weeks',
+     },
+    communicationMethods: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CommunicationMethod' }] // New field added
 });
 
 module.exports = mongoose.model('Company', companySchema);
