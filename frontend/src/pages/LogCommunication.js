@@ -38,8 +38,8 @@ const LogCommunication = () => {
           axios.get("http://localhost:5000/api/communications"),
         ]);
         setCompanies(companiesResponse.data);
-        console.log("iiiiiiiiiiiiiiiii",companiesResponse.data)
-        console.log("companies",companies);
+        console.log("company data",companiesResponse.data)
+       
         setAllCommunicationTypes(communicationTypesResponse.data);
         setCommunications(communicationsResponse.data);
         setLoading(false);
@@ -51,6 +51,8 @@ const LogCommunication = () => {
     };
     fetchData();
   }, []);
+
+
 
   useEffect(() => {
     if (communication.companyId) {
