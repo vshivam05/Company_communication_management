@@ -1,23 +1,8 @@
 const express = require('express');
-const { 
-  logCommunication, 
-  getCommunications, 
-  getNotifications 
-} = require('../controllers/userController.js');
-
-const Communication = require('../models/Communication.js'); // Assuming a Communication model exists
-
 const router = express.Router();
+const dashboardController = require('../controllers/dashboardController'); // Import the new dashboard controller
 
-// Welcome message function
-const welcomeMessage = (req, res) => {
-    res.json({ message: 'Welcome to the Communication Tracking App!' });
-};
-
-// User communication routes
-router.get('/welcome', welcomeMessage); // Add welcome route
-router.post('/communications', logCommunication);
-router.get('/communications', getCommunications);
-router.get('/notifications', getNotifications);
+// Route to get user dashboard data
+router.get('/dashboard', dashboardController.getDashboardData); // Use the new controller
 
 module.exports = router;

@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/companies',  companyRoutes); // Use middleware for company routes
-app.use('/api/users', userRoutes);
+app.use('/api', userRoutes);
 app.use('/api/communication-methods', communicationMethodRoutes);
 app.use('/api/communications', communicationRoutes); // Use middleware for communication routes
 

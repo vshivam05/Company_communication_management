@@ -16,7 +16,7 @@ const addCompany = async (req, res) => {
 const getCompanies = async (req, res) => {
     try {
         const companies = await Company.find().populate('communicationMethods'); // Populate communication methods
-        console.log(companies);
+        // console.log(companies);
         res.status(200).json(companies);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching companies', error });

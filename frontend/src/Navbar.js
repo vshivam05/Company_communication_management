@@ -2,12 +2,13 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
-const links = [
-    { to: '/calendar', label: 'Calendar View' }, // Add link for Calendar View
+  const links = [
+    { to: '/calendar', label: 'Calendar View' },
     { to: '/companies', label: 'Company Management' },
     { to: '/log-communication', label: 'Log Communication' },
     { to: '/notifications', label: 'Notifications' },
     { to: '/communication-methods', label: 'Communication Methods' },
+    { to: '/dashboard', label: 'Dashboard' }, // New link for Dashboard
   ];
 
   return (

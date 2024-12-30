@@ -22,6 +22,7 @@ const communicationMethodSchema = new mongoose.Schema({
         ref: 'Company',
         required: true,
     },
+    
 });
 
 const CommunicationMethod = mongoose.model('CommunicationMethod', communicationMethodSchema);

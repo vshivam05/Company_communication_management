@@ -7,8 +7,9 @@ const communicationSchema = new mongoose.Schema({
         required: true
     },
     type: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CommunicationMethod', // Reference to the CommunicationMethod model
+        required: true, // Ensure that it's required
     },
     notes: {
         type: String,
@@ -17,6 +18,7 @@ const communicationSchema = new mongoose.Schema({
     startDate: { type: Date }, // New field for communication date
     lastDate: { type: Date } // New field for last communication date
 }); // Removed the extra comma here
+
 
 const Communication = mongoose.model('Communication', communicationSchema);
 module.exports = Communication;

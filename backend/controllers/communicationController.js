@@ -3,8 +3,13 @@ const Communication = require('../models/Communication');
 // Create a new communication
 exports.createCommunication = async (req, res) => {
     try {
-        console.log(req.body);
-        const communication = new Communication(req.body);
+        // console.log(req.body);
+        const communicationData = {
+            ...req.body,
+            startDate: req.body.startDate || new Date(), // Set to current date if not provided
+            lastDate: req.body.lastDate || new Date() // Set to current date if not provided
+        };
+        const communication = new Communication(communicationData);
         await communication.save();
         console.log(communication);
         res.status(201).send(communication);
