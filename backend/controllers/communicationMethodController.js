@@ -1,5 +1,5 @@
 const CommunicationMethod = require('../models/CommunicationMethod');
-
+const Communication = require('../models/Communication');
 
 const getCommunicationMethods = async (req, res) => {
     try {
@@ -41,8 +41,18 @@ const deleteCommunicationMethod = async (req, res) => {
     }
 };
 
+const getCommunications = async (req, res) => {
+    try {
+        const communications = await Communication.find().populate('companyId', 'name'); // Populate company name
+        res.json(communications);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getCommunicationMethods,
+    getCommunications, // New function added
     createCommunicationMethod,
     updateCommunicationMethod,
     deleteCommunicationMethod,

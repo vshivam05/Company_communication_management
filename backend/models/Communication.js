@@ -21,8 +21,10 @@ const communicationSchema = new mongoose.Schema({
     dueDate: {
         type: Date,
         required: true
-    }
-});
+    },
+    communicationDate: { type: Date }, // New field for communication date
+    lastCommunicationDate: { type: Date } // New field for last communication date
+}); // Removed the extra comma here
 
 const Communication = mongoose.model('Communication', communicationSchema);
 module.exports = Communication;

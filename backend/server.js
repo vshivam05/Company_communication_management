@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const communicationMethodRoutes = require('./routes/communicationMethodRoutes');
 const companyRoutes = require('./routes/companyRoutes'); // Import company routes
+const communicationRoutes = require('./routes/communicationRoutes'); // Import communication routes
+
 const app = express();
 
 
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use('/api/companies',  companyRoutes); // Use middleware for company routes
 app.use('/api/users', userRoutes);
 app.use('/api/communication-methods', communicationMethodRoutes);
+app.use('/api/communications', communicationRoutes); // Use middleware for communication routes
 
 const PORT = process.env.PORT || 5000;
 
