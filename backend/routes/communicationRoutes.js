@@ -14,9 +14,9 @@ router.post('/', communicationController.createCommunication);
 // router.get('/communications', communicationController.getCommunications);
 
 // Update a communication by ID
-router.put('/communications/:id', communicationController.updateCommunication);
+router.put('/:id', communicationController.updateCommunication);
 
 // Delete a communication by ID
-router.delete('/communications/:id', communicationController.deleteCommunication);
+router.delete('/:id', communicationController.deleteCommunication);
 
 module.exports = router;
