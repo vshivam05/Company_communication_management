@@ -3,14 +3,18 @@ import axios from 'axios';
 
 const Dashboard = () => {
     const [dashboardData, setDashboardData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/dashboard'); // Use the updated endpoint for dashboard
+                const response = await axios.get('http://localhost:5000/api/dashboard');
                 setDashboardData(response.data);
-            } catch (error) {
-                console.error('Error fetching dashboard data:', error);
+                setLoading(false);
+            } catch (err) {
+                setError('Failed to fetch dashboard data.');
+                setLoading(false);
             }
         };
 
@@ -18,54 +22,61 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-            <div className="overflow-x-auto">
-                {dashboardData.length > 0 ? (
-                    <table className="min-w-full table-auto border-collapse border border-gray-300">
+        <div className="min-h-screen bg-gray-100 p-6">
+            <h1 className="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
+
+            {loading ? (
+                <div className="flex justify-center items-center h-64">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+                </div>
+            ) : error ? (
+                <div className="text-red-500 text-center">{error}</div>
+            ) : dashboardData.length > 0 ? (
+                <div className="overflow-x-auto shadow-lg rounded-lg">
+                    <table className="min-w-full bg-white border border-gray-300">
                         <thead>
-                            <tr className="bg-gray-100">
-                                <th className="border p-2 text-left">Company Name</th>
-                                <th className="border p-2 text-left">Last 5 Communications</th>
-                                <th className="border p-2 text-left">Next Scheduled Communication</th>
+                            <tr className="bg-blue-500 text-white">
+                                <th className="px-6 py-3 border-b text-left text-sm font-medium">Company Name</th>
+                                <th className="px-6 py-3 border-b text-left text-sm font-medium">Last 5 Communications</th>
+                                <th className="px-6 py-3 border-b text-left text-sm font-medium">Next Scheduled Communication</th>
                             </tr>
                         </thead>
                         <tbody>
                             {dashboardData.map((company, index) => (
-                                <tr key={index} className="border-b">
-                                    <td className="border p-2">{company.companyName || 'No Name'}</td>
-
-                                    <td className="border p-2">
+                                <tr key={index} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 border-b text-sm text-gray-800">
+                                        {company.companyName || 'No Name'}
+                                    </td>
+                                    <td className="px-6 py-4 border-b text-sm text-gray-800">
                                         {company.lastFiveCommunications.length > 0 ? (
-                                            <ul className="list-none">
+                                            <ul className="list-disc pl-4">
                                                 {company.lastFiveCommunications.map((comm, idx) => (
                                                     <li key={idx} className="py-1">
-                                                        {comm.type} - {comm.date || 'No Date'}
+                                                        <span className="font-semibold">{comm.type}</span> - {comm.date || 'No Date'}
                                                     </li>
                                                 ))}
                                             </ul>
                                         ) : (
-                                            <p>No communications available</p>
+                                            <p className="text-gray-500">No communications available</p>
                                         )}
                                     </td>
-
-                                    <td className="border p-2">
+                                    <td className="px-6 py-4 border-b text-sm text-gray-800">
                                         {company.nextScheduledCommunication ? (
-                                            <span>
+                                            <span className="font-semibold">
                                                 {company.nextScheduledCommunication.type} - {company.nextScheduledCommunication.date || 'No Date'}
                                             </span>
                                         ) : (
-                                            'No scheduled communication'
+                                            <p className="text-gray-500">No scheduled communication</p>
                                         )}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </div>
+                </div>
+            ) : (
+                <p className="text-center text-gray-500">No data available</p>
+            )}
         </div>
     );
 };
