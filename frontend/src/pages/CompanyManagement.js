@@ -27,7 +27,7 @@ const CompanyManagement = () => {
       }
     };
     fetchCompanies();
-  }, []);
+  }, [newCompany]);
 
   // Handle input change
   const handleInputChange = (e) => {

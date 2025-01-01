@@ -11,7 +11,7 @@ exports.createCommunication = async (req, res) => {
         };
         const communication = new Communication(communicationData);
         await communication.save();
-        console.log(communication);
+        // console.log(communication);
         res.status(201).send(communication);
     } catch (error) {
         res.status(400).send(error);

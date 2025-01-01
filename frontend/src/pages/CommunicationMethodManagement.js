@@ -159,6 +159,7 @@ const CommunicationMethodManagement = () => {
                                 value={newMethod.sequence}
                                 onChange={handleInputChange}
                                 required
+                                max="5"
                                 className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                             />
                             <label className="flex items-center">
