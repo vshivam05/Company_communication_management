@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { API } from './API';
 const CompanyManagement = () => {
   const [companies, setCompanies] = useState([]);
   const [newCompany, setNewCompany] = useState({
@@ -21,11 +21,12 @@ const CompanyManagement = () => {
     const fetchCompanies = async () => {
       try {
         const token = localStorage.getItem('adminToken');
-        const response = await axios.get('http://localhost:5000/api/companies', {
+        const response = await axios.get(`${API}/api/companies`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
+        
         console.log(localStorage.getItem('adminToken'));
 
         setCompanies(response.data || []);
@@ -118,7 +119,7 @@ const CompanyManagement = () => {
         {/* Toggle Button */}
         <button
           onClick={() => setIsFormVisible(!isFormVisible)}
-          className="bg-pink-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="bg-teal-600 text-white px-4 py-2 rounded mb-4 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
           {isFormVisible ? 'Hide Form' : 'Add Company'}
         </button>
@@ -187,7 +188,7 @@ const CompanyManagement = () => {
             />
             <button
               type="submit"
-              className="col-span-full bg-pink-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="col-span-full bg-teal-600 text-white p-3 rounded hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               {editingIndex !== null ? 'Update Company' : 'Add Company'}
             </button>
@@ -196,9 +197,9 @@ const CompanyManagement = () => {
 
         {/* Company List Table */}
         <div className="overflow-x-auto">
-          <table className="table-auto w-full bg-gray-50 rounded shadow-md">
+          <table className="table-auto w-full bg-white rounded-lg shadow-sm">
             <thead>
-              <tr className="bg-pink-500 text-white">
+              <tr className="bg-teal-600 text-white">
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Location</th>
                 <th className="px-4 py-2">LinkedIn</th>
@@ -211,7 +212,7 @@ const CompanyManagement = () => {
             </thead>
             <tbody>
               {companies.map((company, index) => (
-                <tr key={company._id} className="border-b border-gray-200">
+                <tr key={company._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-2">{company.name}</td>
                   <td className="px-4 py-2">{company.location}</td>
                   <td className="px-4 py-2">
@@ -231,13 +232,13 @@ const CompanyManagement = () => {
                   <td className="px-4 py-2">
                     <button
                       onClick={() => editCompany(index)}
-                      className="text-blue-500 hover:underline mr-2"
+                      className="text-teal-600 hover:text-teal-800 mr-2 transition-colors"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => deleteCompany(company._id)}
-                      className="text-red-500 hover:underline"
+                      className="text-red-600 hover:text-red-800 transition-colors"
                     >
                       Delete
                     </button>

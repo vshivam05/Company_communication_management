@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { API } from "./API";
 const LogCommunication = () => {
   const [companies, setCompanies] = useState([]);
   const [allCommunicationTypes, setAllCommunicationTypes] = useState([]);
@@ -29,14 +29,15 @@ const LogCommunication = () => {
     const fetchData = async () => {
       try {
         const [
-          companiesResponse,
           communicationTypesResponse,
+          companiesResponse,
           communicationsResponse,
         ] = await Promise.all([
-          axios.get("http://localhost:5000/api/companies"),
-          axios.get("http://localhost:5000/api/communication-methods"),
-          axios.get("http://localhost:5000/api/communications"),
+          axios.get(`${API}/api/communication-methods`),
+          axios.get(`${API}/api/companies`),
+          axios.get(`${API}/api/communications`),
         ]);
+        
         setCompanies(companiesResponse.data);
         console.log("company data",companiesResponse.data)
        
@@ -176,7 +177,7 @@ const LogCommunication = () => {
 
       {!isVisible ? (
         <button
-          className="bg-pink-500 text-white px-2 py-1 rounded hover:bg-green-600 mr-2"
+          className="bg-teal-600 text-white px-2 py-1 rounded hover:bg-teal-700 mr-2"
           onClick={toggleForm}
         >
           Add Communication

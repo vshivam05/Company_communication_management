@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import imag from "../assests/background.jpeg";
+import { API } from './API';
 const AdminLogin = ({ setIsAuthenticated,setIsAdmin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,7 +12,7 @@ const AdminLogin = ({ setIsAuthenticated,setIsAdmin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/admin/login', {
+      const response = await fetch(`${API}/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +37,8 @@ const AdminLogin = ({ setIsAuthenticated,setIsAdmin }) => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100"
+     style={{ backgroundImage: `url(${imag})` }}>
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
           Admin Login

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { API } from './API';
 const Dashboard = () => {
     const [dashboardData, setDashboardData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -9,7 +9,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/dashboard');
+                const response = await axios.get(`${API}/api/dashboard`);
                 setDashboardData(response.data);
                 setLoading(false);
             } catch (err) {
@@ -35,7 +35,7 @@ const Dashboard = () => {
                 <div className="overflow-x-auto shadow-lg rounded-lg">
                     <table className="min-w-full bg-white border border-gray-300">
                         <thead>
-                            <tr className="bg-pink-500 text-white">
+                            <tr className="bg-teal-500 text-white">
                                 <th className="px-6 py-3 border-b text-left text-sm font-medium">Company Name</th>
                                 <th className="px-6 py-3 border-b text-left text-sm font-medium">Last 5 Communications</th>
                                 <th className="px-6 py-3 border-b text-left text-sm font-medium">Next Scheduled Communication</th>

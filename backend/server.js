@@ -28,6 +28,7 @@ const communicationRoutes = require('./routes/communicationRoutes');
 
 const app = express();
 
+const url= process.env.MONGODB_URL;
 
 
 
@@ -46,7 +47,7 @@ app.use('/admin', adminRouter);
 
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect('mongodb+srv://shivamverma:Pa55word@cluster0.l88hq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })

@@ -48,7 +48,7 @@ const Navbar = ({ isAuthenticated, isAdmin}) => {
     : userLinks;
 
   return (
-    <nav className="bg-blue-600 shadow-md">
+    <nav className="bg-teal-600 shadow-lg">
       <div className="container mx-auto px-4 py-3">
         <ul className="flex justify-center sm:justify-start space-x-6">
           {links.map(({ to, label }) => (
@@ -56,8 +56,8 @@ const Navbar = ({ isAuthenticated, isAdmin}) => {
               <NavLink
                 to={to}
                 className={({ isActive }) =>
-                  `text-white font-semibold transition-colors ${
-                    isActive ? 'underline text-blue-300' : 'hover:text-blue-200'
+                  `text-white font-semibold transition-all duration-200 ${
+                    isActive ? 'bg-indigo-700 px-3 py-1.5 rounded-lg shadow-sm' : 'hover:bg-indigo-700/90 px-3 py-1.5 rounded-lg'
                   }`
                 }
               >
@@ -69,7 +69,7 @@ const Navbar = ({ isAuthenticated, isAdmin}) => {
             <li>
               <button
                 onClick={onLogout}
-                className="text-white font-semibold hover:text-blue-200"
+                className="text-white font-semibold hover:bg-indigo-800 px-4 py-1.5 rounded-lg transition-all duration-200"
               >
                 Logout
               </button>

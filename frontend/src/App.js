@@ -10,7 +10,7 @@ import Notifications from "./pages/Notifications";
 import CommunicationMethodManagement from "./pages/CommunicationMethodManagement";
 import Dashboard from "./pages/Dashboard";
 import UserPage from "./pages/UserPage";
-import AdminPage from "./pages/AdminPage";  // Import the AdminPage component
+
 
 // Set base URL for API requests
 axios.defaults.baseURL = "http://localhost:5000";
@@ -36,10 +36,12 @@ const App = () => {
 
   return (
     <Router>
-      <div className="App">
+      <div className="App bg-gray-100 min-h-screen">
         {isAuthenticated && <Navbar isAuthenticated={isAuthenticated} isAdmin={isAdmin} />}
         <Routes>
-          {/* Public Routes */}
+       
+       
+          
           <Route path="/" element={<LandingPage setIsAdmin={setIsAdmin} setIsAuthenticated = {setIsAuthenticated}/>} />
           <Route
             path="/admin/login"
@@ -50,7 +52,8 @@ const App = () => {
           {/* Protected Admin Routes */}
           {isAuthenticated && (
             <>
-              <Route path="/admin" element={<AdminPage />} /> {/* Admin Page */}
+
+              
               <Route path="/companies" element={<CompanyManagement />} />
               <Route path="/communication-methods" element={<CommunicationMethodManagement />} />
               <Route path="/log-communication" element={<LogCommunication />} />

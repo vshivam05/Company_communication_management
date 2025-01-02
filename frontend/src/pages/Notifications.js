@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { API } from "./API";
 const Notifications = () => {
   const [overdue, setOverdue] = useState([]);
   const [todays, setTodays] = useState([]);
@@ -9,7 +9,7 @@ const Notifications = () => {
   useEffect(() => {
     const fetchCommunicationTypes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/communication-methods");
+        const response = await axios.get(`${API}/api/communication-methods`);
         const types = {};
         response.data.forEach((method) => {
           types[method._id] = method.name;
@@ -23,7 +23,7 @@ const Notifications = () => {
 
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/companies");
+        const response = await axios.get(`${API}/api/companies`);
         const companyMap = {};
         response.data.forEach((company) => {
           companyMap[company._id] = company.name;
@@ -37,7 +37,7 @@ const Notifications = () => {
 
     const fetchNotifications = async (types, companies) => {
       try {
-        const response = await axios.get("http://localhost:5000/api/communications");
+        const response = await axios.get(`${API}/api/communications`);
         const communications = response.data;
 
         const now = new Date();

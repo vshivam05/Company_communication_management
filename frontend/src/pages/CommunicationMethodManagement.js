@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-
+import { API } from "./API";
 const predefinedMethods = [
     "LinkedIn Post",
     "LinkedIn Message",
@@ -27,8 +27,8 @@ const CommunicationMethodManagement = () => {
         const fetchData = async () => {
             try {
                 const [methodsResponse, companiesResponse] = await Promise.all([
-                    axios.get("http://localhost:5000/api/communication-methods"),
-                    axios.get("http://localhost:5000/api/companies"),
+                    axios.get(`${API}/api/communication-methods`),
+                    axios.get(`${API}/api/companies`),
                 ]);
                 setMethods(methodsResponse.data);
                 setCompanies(companiesResponse.data);
@@ -56,7 +56,7 @@ const CommunicationMethodManagement = () => {
             setLoading(true);
             if (newMethod._id) {
                 const response = await axios.put(
-                    `http://localhost:5000/api/communication-methods/${newMethod._id}`,
+                    `${API}/api/communication-methods/${newMethod._id}`,
                     newMethod
                 );
                 setMethods(methods.map((method) =>
@@ -64,7 +64,7 @@ const CommunicationMethodManagement = () => {
                 ));
             } else {
                 const response = await axios.post(
-                    "http://localhost:5000/api/communication-methods",
+                    `${API}/api/communication-methods`,
                     newMethod
                 );
                 setMethods([...methods, response.data]);
@@ -80,7 +80,7 @@ const CommunicationMethodManagement = () => {
     const deleteMethod = async (id) => {
         try {
             setLoading(true);
-            await axios.delete(`http://localhost:5000/api/communication-methods/${id}`);
+            await axios.delete(`${API}/api/communication-methods/${id}`);
             setMethods(methods.filter((method) => method._id !== id));
         } catch (error) {
             console.error("Error deleting communication method:", error);
@@ -114,7 +114,7 @@ const CommunicationMethodManagement = () => {
             </h2>
             <button
                 onClick={() => setShowForm(!showForm)}
-                className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+                className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
             >
                 {showForm ? "Close Form" : "Add New Method"}
             </button>
@@ -129,17 +129,19 @@ const CommunicationMethodManagement = () => {
                             onSubmit={addOrUpdateMethod}
                             className="grid grid-cols-1 gap-4 mb-6 bg-white p-6 rounded shadow-lg"
                         >
-                            <select
-                                name="name"
-                                value={newMethod.name}
-                                onChange={handleInputChange}
-                                required
+                             <select
+                                name="companyId"
+                                value={selectedCompany}
+                                onChange={(e) => {
+                                    setSelectedCompany(e.target.value);
+                                    setNewMethod({ ...newMethod, companyId: e.target.value });
+                                }}
                                 className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                             >
-                                <option value="">Select Communication Method</option>
-                                {predefinedMethods.map((method, index) => (
-                                    <option key={index} value={method}>
-                                        {method}
+                                <option value="">Select Company</option>
+                                {companies.map((company) => (
+                                    <option key={company._id} value={company._id}>
+                                        {company.name}
                                     </option>
                                 ))}
                             </select>
@@ -173,24 +175,22 @@ const CommunicationMethodManagement = () => {
                                 Mandatory
                             </label>
                             <select
-                                name="companyId"
-                                value={selectedCompany}
-                                onChange={(e) => {
-                                    setSelectedCompany(e.target.value);
-                                    setNewMethod({ ...newMethod, companyId: e.target.value });
-                                }}
+                                name="name"
+                                value={newMethod.name}
+                                onChange={handleInputChange}
+                                required
                                 className="p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                             >
-                                <option value="">Select Company</option>
-                                {companies.map((company) => (
-                                    <option key={company._id} value={company._id}>
-                                        {company.name}
+                                <option value="">Select Communication Method</option>
+                                {predefinedMethods.map((method, index) => (
+                                    <option key={index} value={method}>
+                                        {method}
                                     </option>
                                 ))}
                             </select>
                             <button
                                 type="submit"
-                                className="bg-pink-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="bg-teal-500 text-white p-3 rounded hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             >
                                 {newMethod._id ? "Update Method" : "Add Method"}
                             </button>
@@ -199,7 +199,7 @@ const CommunicationMethodManagement = () => {
                     <h3 className="text-xl font-bold mb-4 text-gray-800">Existing Methods</h3>
                     <div className="overflow-x-auto bg-white rounded shadow-lg">
                         <table className="min-w-full border border-gray-300">
-                            <thead className="bg-pink-500">
+                            <thead className="bg-teal-600 text-white">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-sm font-medium text-white">
                                         Communication Method

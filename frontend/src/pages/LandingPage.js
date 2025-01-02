@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 import axios from "axios";
-
+import imag from "../assests/background.jpeg";
 const LandingPage = ({setIsAdmin, setIsAuthenticated}) => {
   const navigate = useNavigate();
 
@@ -29,8 +29,9 @@ const LandingPage = ({setIsAdmin, setIsAuthenticated}) => {
 
   return (
     <div 
-      className="min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/background.jpg')" }}
+      className=" bg min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${imag})` }}
+
     >
       {/* <Navbar /> */}
       <div className="flex items-center justify-center min-h-screen bg-black bg-opacity-50">
@@ -41,7 +42,7 @@ const LandingPage = ({setIsAdmin, setIsAuthenticated}) => {
               onClick={() =>{
               
                 navigate('/admin/login')}}
-              className="w-full bg-pink-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="w-full bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-700"
             >
               Admin Login
             </button>
@@ -53,7 +54,7 @@ const LandingPage = ({setIsAdmin, setIsAuthenticated}) => {
               //   }
               //   navigate('/userpage');}}
               onClick={userLogin}
-              className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              className="w-full bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-700"
             >
               User Login
             </button>
