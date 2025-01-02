@@ -176,7 +176,7 @@ const LogCommunication = () => {
 
       {!isVisible ? (
         <button
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-green-600 mr-2"
+          className="bg-pink-500 text-white px-2 py-1 rounded hover:bg-green-600 mr-2"
           onClick={toggleForm}
         >
           Add Communication

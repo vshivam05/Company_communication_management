@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 
-const LandingPage = () => {
+const LandingPage = ({setIsAdmin}) => {
   const navigate = useNavigate();
 
   return (
@@ -16,13 +16,20 @@ const LandingPage = () => {
           <h1 className="text-3xl font-bold mb-6 text-center">Welcome to Communication Management</h1>
           <div className="space-y-4">
             <button
-              onClick={() => navigate('/admin/login')}
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              onClick={() =>{
+              
+                navigate('/admin/login')}}
+              className="w-full bg-pink-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Admin Login
             </button>
             <button
-              onClick={() => navigate('/userpage')}
+              onClick={() => {
+                if(localStorage.getItem('adminToken') !== null){
+                  localStorage.removeItem('adminToken');
+                  setIsAdmin(false);
+                }
+                navigate('/userpage');}}
               className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
             >
               User Login

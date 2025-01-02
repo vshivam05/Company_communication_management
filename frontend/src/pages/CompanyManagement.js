@@ -118,7 +118,7 @@ const CompanyManagement = () => {
         {/* Toggle Button */}
         <button
           onClick={() => setIsFormVisible(!isFormVisible)}
-          className="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="bg-pink-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           {isFormVisible ? 'Hide Form' : 'Add Company'}
         </button>
@@ -187,7 +187,7 @@ const CompanyManagement = () => {
             />
             <button
               type="submit"
-              className="col-span-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="col-span-full bg-pink-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               {editingIndex !== null ? 'Update Company' : 'Add Company'}
             </button>
@@ -198,7 +198,7 @@ const CompanyManagement = () => {
         <div className="overflow-x-auto">
           <table className="table-auto w-full bg-gray-50 rounded shadow-md">
             <thead>
-              <tr className="bg-blue-500 text-white">
+              <tr className="bg-pink-500 text-white">
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Location</th>
                 <th className="px-4 py-2">LinkedIn</th>

@@ -35,7 +35,7 @@ const Dashboard = () => {
                 <div className="overflow-x-auto shadow-lg rounded-lg">
                     <table className="min-w-full bg-white border border-gray-300">
                         <thead>
-                            <tr className="bg-blue-500 text-white">
+                            <tr className="bg-pink-500 text-white">
                                 <th className="px-6 py-3 border-b text-left text-sm font-medium">Company Name</th>
                                 <th className="px-6 py-3 border-b text-left text-sm font-medium">Last 5 Communications</th>
                                 <th className="px-6 py-3 border-b text-left text-sm font-medium">Next Scheduled Communication</th>

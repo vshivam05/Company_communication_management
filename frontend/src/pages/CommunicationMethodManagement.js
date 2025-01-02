@@ -114,7 +114,7 @@ const CommunicationMethodManagement = () => {
             </h2>
             <button
                 onClick={() => setShowForm(!showForm)}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+                className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
             >
                 {showForm ? "Close Form" : "Add New Method"}
             </button>
@@ -190,7 +190,7 @@ const CommunicationMethodManagement = () => {
                             </select>
                             <button
                                 type="submit"
-                                className="bg-blue-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="bg-pink-500 text-white p-3 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             >
                                 {newMethod._id ? "Update Method" : "Add Method"}
                             </button>
@@ -199,7 +199,7 @@ const CommunicationMethodManagement = () => {
                     <h3 className="text-xl font-bold mb-4 text-gray-800">Existing Methods</h3>
                     <div className="overflow-x-auto bg-white rounded shadow-lg">
                         <table className="min-w-full border border-gray-300">
-                            <thead className="bg-blue-500">
+                            <thead className="bg-pink-500">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-sm font-medium text-white">
                                         Communication Method

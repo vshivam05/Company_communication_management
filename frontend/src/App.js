@@ -36,7 +36,7 @@ const App = () => {
         {isAuthenticated && <Navbar isAuthenticated={isAuthenticated} isAdmin={isAdmin} />}
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage setIsAdmin={setIsAdmin} />} />
           <Route
             path="/admin/login"
             element={<AdminLogin setIsAuthenticated={setIsAuthenticated} setIsAdmin={setIsAdmin} />}
@@ -44,7 +44,7 @@ const App = () => {
           <Route path="/userpage" element={<UserPage />} />
 
           {/* Protected Admin Routes */}
-          {isAuthenticated && isAdmin && (
+          {isAuthenticated  && (
             <>
               <Route path="/admin" element={<AdminPage />} /> {/* Admin Page */}
               <Route path="/companies" element={<CompanyManagement />} />

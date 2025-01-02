@@ -9,7 +9,7 @@ const Notifications = () => {
   useEffect(() => {
     const fetchCommunicationTypes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/communicationMethods");
+        const response = await axios.get("http://localhost:5000/api/communication-methods");
         const types = {};
         response.data.forEach((method) => {
           types[method._id] = method.name;
@@ -123,7 +123,7 @@ const Notifications = () => {
                   <h5 className="font-semibold text-red-600 mb-2">Overdue:</h5>
                   {item.overdue.map((comm, index) => (
                     <div key={index} className="mb-4">
-                      <p className="font-semibold text-gray-800">{comm.name}</p>
+                      <p className="font-semibold text-gray-800">{comm.type}</p>
                       <span className="text-gray-600">
                         {comm.date.toLocaleDateString()}
                       </span>
@@ -139,7 +139,7 @@ const Notifications = () => {
                   <h5 className="font-semibold text-green-600 mb-2">Today:</h5>
                   {item.todays.map((comm, index) => (
                     <div key={index} className="mb-4">
-                      <p className="font-semibold text-gray-800">{comm.name}</p>
+                      <p className="font-semibold text-gray-800">{comm.type}</p>
                       <span className="text-gray-600">
                         {comm.date.toLocaleDateString()}
                       </span>

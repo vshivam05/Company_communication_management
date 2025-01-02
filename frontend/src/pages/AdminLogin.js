@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const AdminLogin = ({ setIsAuthenticated }) => {
+const AdminLogin = ({ setIsAuthenticated,setIsAdmin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -25,6 +25,7 @@ const AdminLogin = ({ setIsAuthenticated }) => {
         // Set default authorization header for all requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         setIsAuthenticated(true);
+        setIsAdmin(true);
         navigate('/dashboard');
       } else {
         setError(data.error || 'Login failed');
