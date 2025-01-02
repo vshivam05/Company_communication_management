@@ -20,9 +20,17 @@ const CompanyManagement = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/companies');
+        const token = localStorage.getItem('adminToken');
+        const response = await axios.get('http://localhost:5000/api/companies', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log(localStorage.getItem('adminToken'));
+
         setCompanies(response.data || []);
       } catch (error) {
+        console.log(localStorage.getItem('adminToken'));
         console.error('Error fetching companies:', error.response ? error.response.data : error.message);
       }
     };
@@ -43,7 +51,12 @@ const CompanyManagement = () => {
   const addCompany = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/companies', newCompany);
+      const token = localStorage.getItem('adminToken');
+      const response = await axios.post('http://localhost:5000/api/companies', newCompany, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       setCompanies([...companies, response.data]);
       setNewCompany({
         name: '',

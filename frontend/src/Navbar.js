@@ -1,15 +1,41 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
-const Navbar = () => {
-  const links = [
+const Navbar = ({ isAuthenticated }) => {
+  const location = useLocation();
+  const isAdmin = isAuthenticated;
+
+  // Set authorization header if token exists
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
+
+  const landingLinks = [
+    { to: '/admin/login', label: 'Admin' },
+    { to: '/user/login', label: 'User' }
+  ];
+
+  const userLinks = [
     { to: '/calendar', label: 'Calendar View' },
-    { to: '/companies', label: 'Company Management' },
     { to: '/log-communication', label: 'Log Communication' },
     { to: '/notifications', label: 'Notifications' },
-    { to: '/communication-methods', label: 'Communication Methods' },
-    { to: '/dashboard', label: 'Dashboard' }, // New link for Dashboard
+    { to: '/dashboard', label: 'Dashboard' },
   ];
+
+  const adminLinks = [
+    { to: '/companies', label: 'Company Management' },
+    { to: '/communication-methods', label: 'Communication Methods' },
+    ...userLinks
+  ];
+
+  const isLoginPage = location.pathname.includes('/login');
+  const isHomePage = location.pathname === '/';
+  const links = isHomePage ? landingLinks : 
+               (isLoginPage ? [] : (isAdmin ? adminLinks : userLinks));
 
   return (
     <nav className="bg-blue-600 shadow-md">

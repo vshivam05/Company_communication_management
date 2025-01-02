@@ -1,22 +1,19 @@
 const express = require('express');
-const { getCommunications } = require('../controllers/communicationMethodController');
+const auth = require('../middleware/auth');
 const communicationController = require('../controllers/communicationController');
 
 const router = express.Router();
 
 // Route to fetch communications
-router.get('/', getCommunications);
+router.get('/', auth, communicationController.getCommunications);
 
 // Create a new communication
-router.post('/', communicationController.createCommunication);
-
-// Fetch all communications
-// router.get('/communications', communicationController.getCommunications);
+router.post('/', auth, communicationController.createCommunication);
 
 // Update a communication by ID
-router.put('/:id', communicationController.updateCommunication);
+router.put('/:id', auth, communicationController.updateCommunication);
 
 // Delete a communication by ID
-router.delete('/:id', communicationController.deleteCommunication);
+router.delete('/:id', auth, communicationController.deleteCommunication);
 
 module.exports = router;

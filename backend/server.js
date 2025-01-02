@@ -1,6 +1,25 @@
+require('dotenv').config({ path: './.env' });
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const Admin = require('./models/Admin');
+
+// Create default admin if not exists
+const createDefaultAdmin = async () => {
+  const admin = await Admin.findOne({ username: 'admin' });
+  if (!admin) {
+    const admin = new Admin({
+      username: 'admin',
+      password: 'admin123',
+      role: 'admin'
+    });
+    await admin.save();
+    console.log('Default admin created successfully');
+    await admin.save();
+  }
+};
+
+createDefaultAdmin();
 const userRoutes = require('./routes/userRoutes');
 const communicationMethodRoutes = require('./routes/communicationMethodRoutes');
 const companyRoutes = require('./routes/companyRoutes'); // Import company routes
@@ -19,6 +38,10 @@ app.use('/api/companies',  companyRoutes);
 app.use('/api', userRoutes);
 app.use('/api/communication-methods', communicationMethodRoutes);
 app.use('/api/communications', communicationRoutes);
+
+// Admin routes
+const adminRouter = require('./routes/adminRoutes');
+app.use('/admin', adminRouter);
 
 
 const PORT = process.env.PORT || 5000;
