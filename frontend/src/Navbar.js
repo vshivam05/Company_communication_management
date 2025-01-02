@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-const Navbar = ({ isAuthenticated }) => {
+const Navbar = ({ isAuthenticated, isAdmin, onLogout }) => {
   const location = useLocation();
-  const isAdmin = isAuthenticated;
 
-  // Set authorization header if token exists
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     if (token) {
@@ -16,11 +14,10 @@ const Navbar = ({ isAuthenticated }) => {
 
   const landingLinks = [
     { to: '/admin/login', label: 'Admin' },
-    { to: '/user/login', label: 'User' }
+    { to: '/user/login', label: 'User ' }
   ];
 
   const userLinks = [
-    { to: '/calendar', label: 'Calendar View' },
     { to: '/log-communication', label: 'Log Communication' },
     { to: '/notifications', label: 'Notifications' },
     { to: '/dashboard', label: 'Dashboard' },
@@ -34,8 +31,13 @@ const Navbar = ({ isAuthenticated }) => {
 
   const isLoginPage = location.pathname.includes('/login');
   const isHomePage = location.pathname === '/';
-  const links = isHomePage ? landingLinks : 
-               (isLoginPage ? [] : (isAdmin ? adminLinks : userLinks));
+  const links = isHomePage
+    ? landingLinks
+    : isLoginPage
+    ? []
+    : isAdmin
+    ? adminLinks
+    : userLinks;
 
   return (
     <nav className="bg-blue-600 shadow-md">
@@ -55,6 +57,16 @@ const Navbar = ({ isAuthenticated }) => {
               </NavLink>
             </li>
           ))}
+          {isAuthenticated && (
+            <li>
+              <button
+                onClick={onLogout}
+                className="text-white font-semibold hover:text-blue-200"
+              >
+                Logout
+              </button>
+            </li>
+          )}
         </ul>
       </div>
     </nav>

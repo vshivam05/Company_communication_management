@@ -10,7 +10,7 @@ const LandingPage = () => {
       className="min-h-screen bg-cover bg-center"
       style={{ backgroundImage: "url('/images/background.jpg')" }}
     >
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex items-center justify-center min-h-screen bg-black bg-opacity-50">
         <div className="bg-white p-8 rounded-lg shadow-lg">
           <h1 className="text-3xl font-bold mb-6 text-center">Welcome to Communication Management</h1>
@@ -22,7 +22,7 @@ const LandingPage = () => {
               Admin Login
             </button>
             <button
-              onClick={() => navigate('/user/login')}
+              onClick={() => navigate('/userpage')}
               className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
             >
               User Login
