@@ -19,7 +19,7 @@ const LandingPage = ({setIsAdmin, setIsAuthenticated}) => {
       setIsAuthenticated(false);
       setIsAdmin(false);
     }
-  }, []);``
+  }, []);
 
   const userLogin = () => {
     setIsAdmin(false);
