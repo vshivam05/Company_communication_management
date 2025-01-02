@@ -1,9 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
+import axios from "axios";
 
-const LandingPage = ({setIsAdmin}) => {
+const LandingPage = ({setIsAdmin, setIsAuthenticated}) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check for existing token on initial load
+    const token = localStorage.getItem("adminToken");
+    // console.log("hiiiiiii")
+    if (token) {
+      setIsAuthenticated(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setIsAdmin(true); // Assuming the token indicates an admin user
+      console.log("Admin user detected",token);
+    }else{
+      setIsAuthenticated(false);
+      setIsAdmin(false);
+    }
+  }, []);``
+
+  const userLogin = () => {
+    setIsAdmin(false);
+    setIsAuthenticated(true);
+    navigate('/userpage');
+  }
 
   return (
     <div 
@@ -24,12 +46,13 @@ const LandingPage = ({setIsAdmin}) => {
               Admin Login
             </button>
             <button
-              onClick={() => {
-                if(localStorage.getItem('adminToken') !== null){
-                  localStorage.removeItem('adminToken');
-                  setIsAdmin(false);
-                }
-                navigate('/userpage');}}
+              // onClick={() => {
+              //   if(localStorage.getItem('adminToken') !== null){
+              //     localStorage.removeItem('adminToken');
+              //     setIsAdmin(false);
+              //   }
+              //   navigate('/userpage');}}
+              onClick={userLogin}
               className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
             >
               User Login

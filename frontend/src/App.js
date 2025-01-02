@@ -22,11 +22,15 @@ const App = () => {
   useEffect(() => {
     // Check for existing token on initial load
     const token = localStorage.getItem("adminToken");
+    console.log("hiiiiiii")
     if (token) {
       setIsAuthenticated(true);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setIsAdmin(true); // Assuming the token indicates an admin user
       console.log("Admin user detected",token);
+    }else{
+      setIsAuthenticated(false);
+      setIsAdmin(false);
     }
   }, []);
 
@@ -36,7 +40,7 @@ const App = () => {
         {isAuthenticated && <Navbar isAuthenticated={isAuthenticated} isAdmin={isAdmin} />}
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<LandingPage setIsAdmin={setIsAdmin} />} />
+          <Route path="/" element={<LandingPage setIsAdmin={setIsAdmin} setIsAuthenticated = {setIsAuthenticated}/>} />
           <Route
             path="/admin/login"
             element={<AdminLogin setIsAuthenticated={setIsAuthenticated} setIsAdmin={setIsAdmin} />}
@@ -44,7 +48,7 @@ const App = () => {
           <Route path="/userpage" element={<UserPage />} />
 
           {/* Protected Admin Routes */}
-          {isAuthenticated  && (
+          {isAuthenticated && (
             <>
               <Route path="/admin" element={<AdminPage />} /> {/* Admin Page */}
               <Route path="/companies" element={<CompanyManagement />} />

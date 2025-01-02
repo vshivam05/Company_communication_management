@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Navbar = ({ isAuthenticated, isAdmin, onLogout }) => {
+const Navbar = ({ isAuthenticated, isAdmin}) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -11,6 +12,13 @@ const Navbar = ({ isAuthenticated, isAdmin, onLogout }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     }
   }, []);
+
+  const onLogout = () => {
+    if(localStorage.getItem('adminToken') !== null){
+      localStorage.removeItem('adminToken');
+    }
+    navigate('/');
+  }
 
   const landingLinks = [
     { to: '/admin/login', label: 'Admin' },
