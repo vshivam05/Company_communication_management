@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "./API";
+
 const Notifications = () => {
   const [overdue, setOverdue] = useState([]);
   const [todays, setTodays] = useState([]);
   const [counts, setCounts] = useState({ overdue: 0, todays: 0 });
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchCommunicationTypes = async () => {
@@ -93,6 +95,8 @@ const Notifications = () => {
             : "Notifications";
       } catch (error) {
         console.error("Error fetching notifications:", error);
+      } finally {
+        setIsLoading(false); // Set loading to false once data is fetched
       }
     };
 
@@ -167,8 +171,18 @@ const Notifications = () => {
           </span>
         ) : null}
       </div>
-      {renderGrid(overdue, `Companies with Overdue Communications (${counts.overdue})`, "overdue")}
-      {renderGrid(todays, `Companies with Today's Communications (${counts.todays})`, "todays")}
+
+      {/* Display Circular Progress Bar when loading */}
+      {isLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+        </div>
+      ) : (
+        <>
+          {renderGrid(overdue, `Companies with Overdue Communications (${counts.overdue})`, "overdue")}
+          {renderGrid(todays, `Companies with Today's Communications (${counts.todays})`, "todays")}
+        </>
+      )}
     </div>
   );
 };

@@ -3,14 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import imag from "../assests/background.jpeg";
 import { API } from './API';
-const AdminLogin = ({ setIsAuthenticated,setIsAdmin }) => {
+
+const AdminLogin = ({ setIsAuthenticated, setIsAdmin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when login starts
+    setError(''); // Clear any previous errors
     try {
       const response = await fetch(`${API}/admin/login`, {
         method: 'POST',
@@ -23,22 +27,34 @@ const AdminLogin = ({ setIsAuthenticated,setIsAdmin }) => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('adminToken', data.token);
-        // Set default authorization header for all requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         setIsAuthenticated(true);
         setIsAdmin(true);
         navigate('/dashboard');
+        setLoading(false);
       } else {
         setError(data.error || 'Login failed');
       }
     } catch (err) {
       setError('An error occurred during login');
     }
+    
   };
 
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      </div>
+    );
+  }
+  
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100"
-     style={{ backgroundImage: `url(${imag})` }}>
+    <div
+      className="flex items-center justify-center min-h-screen bg-gray-100"
+      style={{ backgroundImage: `url(${imag})` }}
+    >
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
           Admin Login
@@ -76,10 +92,9 @@ const AdminLogin = ({ setIsAuthenticated,setIsAdmin }) => {
           <button
             type="submit"
             className="w-full px-4 py-2 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          
-            
+            disabled={loading} // Disable button when loading
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'} {/* Show loading text */}
           </button>
         </form>
       </div>

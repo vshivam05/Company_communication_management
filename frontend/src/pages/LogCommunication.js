@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API } from "./API";
+
 const LogCommunication = () => {
   const [companies, setCompanies] = useState([]);
   const [allCommunicationTypes, setAllCommunicationTypes] = useState([]);
@@ -13,15 +14,13 @@ const LogCommunication = () => {
     notes: "",
   });
 
-  const [filteredCommunicationTypes, setFilteredCommunicationTypes] = useState(
-    []
-  );
+  const [filteredCommunicationTypes, setFilteredCommunicationTypes] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [currentCommunication, setCurrentCommunication] = useState(null);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // To manage loading state
 
   const toggleForm = () => setIsVisible(true);
 
@@ -37,23 +36,19 @@ const LogCommunication = () => {
           axios.get(`${API}/api/companies`),
           axios.get(`${API}/api/communications`),
         ]);
-        
+
         setCompanies(companiesResponse.data);
-        console.log("company data",companiesResponse.data)
-       
         setAllCommunicationTypes(communicationTypesResponse.data);
         setCommunications(communicationsResponse.data);
-        setLoading(false);
+        setLoading(false); // Data fetched, stop loading
       } catch (err) {
         console.error("Error fetching data:", err.message);
         setError("Failed to fetch data. Please try again.");
-        setLoading(false);
+        setLoading(false); // Stop loading even on error
       }
     };
     fetchData();
   }, []);
-
-
 
   useEffect(() => {
     if (communication.companyId) {
@@ -65,6 +60,19 @@ const LogCommunication = () => {
       setFilteredCommunicationTypes([]);
     }
   }, [communication.companyId, allCommunicationTypes]);
+
+  // Update the form fields when editing starts
+  useEffect(() => {
+    if (isEditing && currentCommunication) {
+      setCommunication({
+        companyId: currentCommunication.companyId,
+        type: currentCommunication.type,
+        startDate: formatDate(currentCommunication.startDate),
+        lastDate: formatDate(currentCommunication.lastDate),
+        notes: currentCommunication.notes,
+      });
+    }
+  }, [isEditing, currentCommunication]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -122,13 +130,6 @@ const LogCommunication = () => {
   const handleEdit = (comm) => {
     setIsEditing(true);
     setCurrentCommunication(comm);
-    setCommunication({
-      companyId: comm.companyId,
-      type: comm.type,
-      startDate: formatDate(comm.startDate), // Format the date
-      lastDate: formatDate(comm.lastDate), // Format the date
-      notes: comm.notes,
-    });
     setIsVisible(true);
   };
 
@@ -141,7 +142,7 @@ const LogCommunication = () => {
       );
       setCommunications(
         communications.map((comm) =>
-          comm.name === currentCommunication.name ? response.data : comm
+          comm._id === currentCommunication._id ? response.data : comm
         )
       );
       setMessage("Communication updated successfully!");
@@ -166,7 +167,11 @@ const LogCommunication = () => {
   };
 
   if (loading) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
@@ -260,11 +265,8 @@ const LogCommunication = () => {
         <tbody>
           {communications.map((comm) => {
             const company = companies.find((comp) => comp._id === comm.companyId) || {};
-           
-
             const communicationType =
-              allCommunicationTypes.find((type) => type._id === comm.type) ||
-              {};   
+              allCommunicationTypes.find((type) => type._id === comm.type) || {};
 
             return (
               <tr key={comm._id}>
@@ -278,21 +280,21 @@ const LogCommunication = () => {
                   {comm.notes}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {new Date(comm.startDate).toLocaleString()}
+                  {formatDate(comm.startDate)}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {new Date(comm.lastDate).toLocaleString()}
+                  {formatDate(comm.lastDate)}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   <button
-                    className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 mr-2"
                     onClick={() => handleEdit(comm)}
+                    className="bg-blue-500 text-white px-2 py-1 rounded mr-2 hover:bg-blue-600"
                   >
                     Edit
                   </button>
                   <button
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                     onClick={() => deleteCommunication(comm._id)}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                   >
                     Delete
                   </button>

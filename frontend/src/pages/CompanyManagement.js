@@ -15,7 +15,7 @@ const CompanyManagement = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [editingCompany, setEditingCompany] = useState({});
   const [isFormVisible, setIsFormVisible] = useState(false);
-
+const [loading, setLoading] = useState(true);
   // Fetch companies on component load
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -30,6 +30,7 @@ const CompanyManagement = () => {
         console.log(localStorage.getItem('adminToken'));
 
         setCompanies(response.data || []);
+        setLoading(false);
       } catch (error) {
         console.log(localStorage.getItem('adminToken'));
         console.error('Error fetching companies:', error.response ? error.response.data : error.message);
@@ -110,6 +111,15 @@ const CompanyManagement = () => {
       console.error('Error deleting company:', error.response ? error.response.data : error.message);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -196,6 +206,7 @@ const CompanyManagement = () => {
         )}
 
         {/* Company List Table */}
+
         <div className="overflow-x-auto">
           <table className="table-auto w-full bg-white rounded-lg shadow-sm">
             <thead>
