@@ -1,6 +1,21 @@
-   # Communication Management System
+# Communication Management System
+
+
+Access admin features using:
+     - User ID: `admin`
+     - Password: `admin123`
+
+> **Note:** The backend is deployed on Render's free tier, which may cause initial loading delays on first access. Please be patient as the server spins up.
 
 ## Application Flow
+
+### System Flow
+1. **Company Management** - Create and manage companies
+2. **Communication Methods** - Select communication methods for companies
+3. **Log Communication** - Record communication details
+4. **Dashboard** - View communication analytics and reports
+5. **Notifications** - Get alerts for upcoming and overdue communications
+
 
 ### Admin Module
 1. **Admin Login**
