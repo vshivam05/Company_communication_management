@@ -128,7 +128,7 @@ backend/
 
 ### Frontend
 ```env
-REACT_APP_API_URL=http://localhost:5000
+REACT_APP_API_URL=https://company-communication-management.onrender.com
 ```
 
 ### Backend

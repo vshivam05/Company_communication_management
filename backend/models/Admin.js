@@ -43,4 +43,5 @@ AdminSchema.methods.addToken = async function(token) {
   await this.save();
 };
 
+
 module.exports = mongoose.model('Admin', AdminSchema);

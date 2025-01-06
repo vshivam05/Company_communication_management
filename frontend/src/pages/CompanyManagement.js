@@ -27,7 +27,7 @@ const [loading, setLoading] = useState(true);
           },
         });
         
-        console.log(localStorage.getItem('adminToken'));
+        // console.log(localStorage.getItem('adminToken'));
 
         setCompanies(response.data || []);
         setLoading(false);
@@ -54,7 +54,7 @@ const [loading, setLoading] = useState(true);
     e.preventDefault();
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.post('http://localhost:5000/api/companies', newCompany, {
+      const response = await axios.post(`${API}/api/companies`, newCompany, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -87,7 +87,7 @@ const [loading, setLoading] = useState(true);
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/companies/${editingCompany._id}`,
+        `${API}/api/companies/${editingCompany._id}`,
         editingCompany
       );
       const updatedCompanies = companies.map((company, index) =>
@@ -97,6 +97,8 @@ const [loading, setLoading] = useState(true);
       setEditingIndex(null);
       setEditingCompany({});
       setIsFormVisible(false);
+      // setLoading(true);
+      
     } catch (error) {
       console.error('Error updating company:', error.response ? error.response.data : error.message);
     }
@@ -105,7 +107,7 @@ const [loading, setLoading] = useState(true);
   // Delete a company
   const deleteCompany = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/companies/${id}`);
+      await axios.delete(`${API}/api/companies/${id}`);
       setCompanies(companies.filter((company) => company._id !== id));
     } catch (error) {
       console.error('Error deleting company:', error.response ? error.response.data : error.message);

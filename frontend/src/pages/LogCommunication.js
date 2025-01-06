@@ -83,7 +83,7 @@ const LogCommunication = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/communications",
+        "https://company-communication-management.onrender.com/api/communications",
         communication
       );
       setCommunications([...communications, response.data]);
@@ -109,7 +109,7 @@ const LogCommunication = () => {
 
   const deleteCommunication = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/communications/${id}`);
+      await axios.delete(`https://company-communication-management.onrender.com/api/communications/${id}`);
       setCommunications(communications.filter((comm) => comm._id !== id));
       setMessage("Communication deleted successfully!");
     } catch (err) {
@@ -137,7 +137,7 @@ const LogCommunication = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/communications/${currentCommunication._id}`,
+        `https://company-communication-management.onrender.com/api/communications/${currentCommunication._id}`,
         communication
       );
       setCommunications(

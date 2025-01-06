@@ -15,31 +15,31 @@ const AdminLogin = ({ setIsAuthenticated, setIsAdmin }) => {
     e.preventDefault();
     setLoading(true); // Set loading to true when login starts
     setError(''); // Clear any previous errors
+  
     try {
-      const response = await fetch(`${API}/admin/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await axios.post(`${API}/admin/login`, {
+        username,
+        password,
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.setItem('adminToken', data.token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-        setIsAuthenticated(true);
-        setIsAdmin(true);
-        navigate('/dashboard');
-        setLoading(false);
-      } else {
-        setError(data.error || 'Login failed');
-      }
+  
+      // Process the successful response
+      // console.log(response);
+      const data = response.data;
+      localStorage.setItem('adminToken', data.token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      setIsAuthenticated(true);
+      setIsAdmin(true);
+      navigate('/dashboard');
     } catch (err) {
-      setError('An error occurred during login');
+      // Handle errors
+      const errorMessage = err.response?.data?.error || 'An error occurred during login';
+      setError(errorMessage);
+    } finally {
+      // Always set loading to false at the end
+      setLoading(false);
     }
-    
   };
+  
 
 
   if (loading) {

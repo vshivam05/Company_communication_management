@@ -13,7 +13,7 @@ import UserPage from "./pages/UserPage";
 
 
 // Set base URL for API requests
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://company-communication-management.onrender.com";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -22,7 +22,7 @@ const App = () => {
   useEffect(() => {
     // Check for existing token on initial load
     const token = localStorage.getItem("adminToken");
-    console.log("hiiiiiii")
+    
     if (token) {
       setIsAuthenticated(true);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -31,6 +31,7 @@ const App = () => {
     }else{
       setIsAuthenticated(false);
       setIsAdmin(false);
+      console.log("Admin user not detected"," ,not present");
     }
   }, []);
 

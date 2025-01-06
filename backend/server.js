@@ -24,6 +24,7 @@ const userRoutes = require('./routes/userRoutes');
 const communicationMethodRoutes = require('./routes/communicationMethodRoutes');
 const companyRoutes = require('./routes/companyRoutes'); // Import company routes
 const communicationRoutes = require('./routes/communicationRoutes');
+const adminRouter = require('./routes/adminRoutes');
 
 
 const app = express();
@@ -35,14 +36,13 @@ const url= process.env.MONGODB_URL;
 app.use(cors());
 app.use(express.json());
 
+app.use('/admin', adminRouter);
 app.use('/api/companies',  companyRoutes); 
 app.use('/api', userRoutes);
 app.use('/api/communication-methods', communicationMethodRoutes);
 app.use('/api/communications', communicationRoutes);
 
 // Admin routes
-const adminRouter = require('./routes/adminRoutes');
-app.use('/admin', adminRouter);
 
 
 const PORT = process.env.PORT || 5000;

@@ -1,31 +1,29 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const Admin = require('../models/Admin');
 
 const adminLogin = async (req, res) => {
-    const { username, password } = req.body;
-
-    // Hardcoded admin credentials
-    const ADMIN_USERNAME = 'admin';
-    const ADMIN_PASSWORD = 'admin123';
 
     try {
-        // Validate credentials
-        if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-            return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        // Create and return JWT token
-        const token = jwt.sign(
-            { username: ADMIN_USERNAME },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-
-        res.status(200).json({ token });
+      const admin = await Admin.findOne({ username: req.body.username });
+      if (!admin) {
+        return res.status(400).send({ error: 'Invalid credentials' });
+      }
+  
+      const isMatch = await admin.comparePassword(req.body.password);
+      if (!isMatch) {
+        return res.status(400).send({ error: 'Invalid credentials' });
+      }
+  
+      const token = jwt.sign({ _id: admin._id }, process.env.JWT_SECRET);
+      admin.tokens = admin.tokens.concat({ token });
+      await admin.save();
+      console.log("Admin logged in successfully",admin);
+      res.send({ admin, token });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+      res.status(400).send(error);
     }
-};
+  }
 
 module.exports = {
     adminLogin

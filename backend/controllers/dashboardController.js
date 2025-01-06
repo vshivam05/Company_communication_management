@@ -18,15 +18,15 @@ exports.getDashboardData = async (req, res) => {
                 .populate('type', 'name description sequence mandatory'); // Populating communication method data
 
             // Log the communications to check population
-            console.log('Last Communications for company', company.name, lastCommunications);
+            // console.log('Last Communications for company', company.name, lastCommunications);
 
             // Fetch the next scheduled communication, populate the 'type' field
             const nextCommunication = await Communication.findOne({ companyId: company._id })
                 .sort({ date: 1 })
                 .populate('type', 'name description sequence mandatory'); // Populating communication method data
 
-            console.log('Next Scheduled Communication Query:', nextCommunication);
-            console.log('Next Scheduled Communication for company', company.name, nextCommunication);
+            // console.log('Next Scheduled Communication Query:', nextCommunication);
+            // console.log('Next Scheduled Communication for company', company.name, nextCommunication);
 
             const formatDate = (date) => {
                 if (date && date instanceof Date) {
